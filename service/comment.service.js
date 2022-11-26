@@ -1,6 +1,3 @@
-const { lorem, datatype } = require('faker');
-const userService = require('./user.service');
-const productService = require('./product.service');
 const { getUser } = require('../data/controller/user');
 const { getProduct } = require('../data/controller/product');
 const { createComment, getComment, getComments } = require('../data/controller/comment');

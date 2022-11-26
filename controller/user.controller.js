@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { name, internet, image, datatype } = require('faker');
 const userService = require('../service/user.service');
 
 // CRUD
