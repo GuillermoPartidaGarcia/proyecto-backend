@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/static/css/main.233b3b67.css",
+    "main.js": "/static/js/main.034ff939.js",
+    "static/js/787.b7eb4d41.chunk.js": "/static/js/787.b7eb4d41.chunk.js",
+    "static/media/roses.png": "/static/media/roses.806c832007fc33bdb424.png",
+    "static/media/multicolor-roses.png": "/static/media/multicolor-roses.91498ff1fc97ee5b0cbb.png",
+    "static/media/centro.png": "/static/media/centro.6be1223fa108855c71c3.png",
+    "static/media/flower-bucket.png": "/static/media/flower-bucket.f2769c2afe8558606126.png",
+    "static/media/rings.png": "/static/media/rings.04ae2910f6c182154943.png",
+    "static/media/dress.png": "/static/media/dress.5791e619ba60be63701b.png",
+    "index.html": "/index.html",
+    "main.233b3b67.css.map": "/static/css/main.233b3b67.css.map",
+    "main.034ff939.js.map": "/static/js/main.034ff939.js.map",
+    "787.b7eb4d41.chunk.js.map": "/static/js/787.b7eb4d41.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.233b3b67.css",
+    "static/js/main.034ff939.js"
+  ]
+}
