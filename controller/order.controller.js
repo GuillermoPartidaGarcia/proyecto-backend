@@ -18,7 +18,7 @@ async function orderCreate(req, res){
         user
     } = req;
 
-    if (user) 
+    if (!user) 
       return res.status(500).send('Unathorized');
 
     const {id:userid} = user;

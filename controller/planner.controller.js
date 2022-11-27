@@ -11,7 +11,7 @@ async function plannerCreate(req, res){
         user,
     } = req;
 
-    if (user) 
+    if (!user) 
       return res.status(401).send('Unathorized');
 
     const {id:userid} = user;
