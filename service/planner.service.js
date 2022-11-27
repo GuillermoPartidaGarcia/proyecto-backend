@@ -1,6 +1,6 @@
 const { getProduct, getProducts } = require('../data/controller/product');
 const { getUser, changeUser } = require('../data/controller/user');
-const { createPlanner, getPlanner } = require('../data/controller/planner');
+const { createPlanner, getPlanner, changePlanner } = require('../data/controller/planner');
 const { plannerState } = require('../data/enums/plannerState');
 
 const productMediaToURL = product => 
@@ -78,7 +78,7 @@ async function plannerAddProduct(id, productid) {
 
 async function plannerRemoveProduct(id, productid) {
     try {
-        const product = await getProduct({ _id: id });
+        const product = await getProduct({ _id: productid });
         if (!product)
             return { code: 404, err: 'Product not found' };
 
@@ -89,8 +89,7 @@ async function plannerRemoveProduct(id, productid) {
         if (planner.products.indexOf(product.id) === -1)
             return { code: 400, err: 'Product is not in planner' };
 
-        planner.products = planner.products.filter(id => id !== productid);
-        await planner.save();
+        await changePlanner({ _id: id }, { $pull: { products: productid } } );
 
         return { code: 200, data: planner };
     } catch (e) {

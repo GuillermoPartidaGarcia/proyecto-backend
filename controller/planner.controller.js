@@ -15,8 +15,6 @@ async function plannerCreate(req, res){
       return res.status(401).send('Unathorized');
 
     const {id:userid} = user;
-
-    console.log(date);
     
     const userErr =  validatePlannerCreate(userid);
     if(userErr)

@@ -171,9 +171,6 @@ async function productSearch(query) {
             {name: { $regex: query || '' }},
           ]}).populate('media');
 
-        if (products.length === 0)
-            return { code: 404, err: 'No products found' };
-
         products = products.map(product => {
           const media = product.media.map(
             mediaEntry => `/media-read/${mediaEntry._id.toString()}`
