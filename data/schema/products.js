@@ -14,6 +14,7 @@ const productSchema = new Schema({
     },
     comments: { type: [Schema.Types.ObjectId], ref: 'Comment', },
     orders: { type: [Schema.Types.ObjectId], ref: 'Order' },
+    reviews: { type: [Schema.Types.ObjectId], ref: 'Review' },
 });
 
 productSchema.index({ name: 'text', tags: 'text' });

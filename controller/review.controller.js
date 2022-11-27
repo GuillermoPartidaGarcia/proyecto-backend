@@ -10,8 +10,19 @@ function validateReviewCreate(userId, productId, value){
     return null;
 }
 async function reviewCreateOrUpdate(req, res){
-    const { id: userId } = req.user;
-    const { productId, value } = req.body;
+    const {
+      user,
+      body: {
+        productId,
+        value
+      },
+    } = req;
+    
+    if (!user) {
+      return res.status(401).send('Unathorized');
+    } 
+
+    const { id: userId } = user;
 
     const userErr = validateReviewCreate(userId, productId, value);
     if(userErr)
@@ -21,6 +32,38 @@ async function reviewCreateOrUpdate(req, res){
     if(err) 
         return res.status(code).send(err);
     res.status(200).json(data);
+}
+
+function validateMyReview(userId, productId){
+  if(!userId)
+      return 'userId required'; 
+  if(!productId)
+      return 'productId required';
+  return null;
+}
+async function myReview(req, res){
+
+  const { 
+    user, 
+    params: {
+      id:productId
+    } 
+  } = req;
+
+  if (!user) {
+    return res.status(401).send('Unathorized');
+  } 
+
+  const { id:userId } = user;
+
+  const userErr = validateMyReview( userId, productId);
+  if(userErr)
+      return res.status(400).send(userErr);
+
+  const { code, err, data } = await reviewService.myReview( userId, productId);
+  if(err) 
+      return res.status(code).send(err);
+  res.status(200).json(data);
 }
 
 function validateReviewFromProduct(productId){
@@ -61,6 +104,7 @@ async function reviewDelete(req, res){
 
 module.exports = {
     reviewCreateOrUpdate,
+    myReview,
     reviewFromProduct,
     reviewDelete
 };

@@ -8,8 +8,13 @@ function validatePlannerCreate(userid){
 async function plannerCreate(req, res){
     const { 
         body:{date, productids},
-        user:{id:userid} 
+        user,
     } = req;
+
+    if (user) 
+      return res.status(401).send('Unathorized');
+
+    const {id:userid} = user;
 
     console.log(date);
     

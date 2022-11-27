@@ -17,8 +17,13 @@ async function commentCreate(req,res){
             content, 
             productId
         },
-        user:{id:userId}
+        user,
     } = req;
+
+    if (!user)
+      return res.status(401).send('Unathorized');
+      
+    const {id:userId} = user;
 
     const userErr=validateCommentCreate(userId, productId, content);
     if(userErr)
@@ -54,7 +59,14 @@ function validateCommentFromProduct(productId){
     return null;
 }
 async function commentFromProduct(req,res){
-    const {id:productId}=req.params;
+    const {
+      user,
+      params: {id: productId }
+    } = req;
+
+    if (!user){
+      return res.status(401).send('Unauthorized');
+    }
 
     const userErr=validateCommentFromProduct(productId);
     if(userErr)

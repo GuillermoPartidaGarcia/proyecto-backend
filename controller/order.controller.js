@@ -15,8 +15,13 @@ function validateOrderCreate(userid, productid, quantity){
 async function orderCreate(req, res){
     const { 
         body:{ productid, quantity }, 
-        user:{id:userid} 
+        user
     } = req;
+
+    if (user) 
+      return res.status(500).send('Unathorized');
+
+    const {id:userid} = user;
 
     const userErr = validateOrderCreate(userid, productid, quantity);
     if(userErr)

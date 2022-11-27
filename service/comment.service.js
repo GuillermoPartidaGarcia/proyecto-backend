@@ -1,5 +1,5 @@
-const { getUser } = require('../data/controller/user');
-const { getProduct } = require('../data/controller/product');
+const { getUser, changeUser } = require('../data/controller/user');
+const { getProduct, changeProduct } = require('../data/controller/product');
 const { createComment, getComment, getComments } = require('../data/controller/comment');
 
 async function commentCreate(userid, productid, content) {
@@ -17,6 +17,9 @@ async function commentCreate(userid, productid, content) {
             product: product._id,
             content
         });
+
+        await changeUser({ _id: user._id }, { $push: { comments: data._id }});
+        await changeProduct({ _id: product._id }, { $push: { comments: data._id }});
 
         return { code: 200, data };
     } catch (e) {
@@ -39,7 +42,7 @@ async function commentFromProduct(productId) {
         if (!product)
             return { code: 404, err: 'Product not found' };
 
-        const comments = await getComments({ product: product._id }).populate(['user', 'product']);
+        const comments = await getComments({ product: product._id }).populate('user');
 
         return { code: 200, data: comments };
     } catch (e) {

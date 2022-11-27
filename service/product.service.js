@@ -1,6 +1,6 @@
 const { createMedia } = require('../data/controller/media');
 const { createProduct, getProduct, getProducts } = require('../data/controller/product');
-const { getUser } = require('../data/controller/user');
+const { getUser, removeUser } = require('../data/controller/user');
 
 
 const productMediaToURL = product => 
@@ -52,9 +52,34 @@ async function productCreate(userId, name, description, price, tags, files = [])
     }
 }
 
+async function myProducts(userid){
+  try {
+    const products = await getProducts({user: userid}).populate('media');
+
+    return { 
+      code: 200,
+      data: 
+        products.map(product => ({
+          ...product.toObject(), 
+          media: productMediaToURL(product)
+        })) 
+    };
+  } catch (e) {
+    
+  }
+}
+
 async function productFind(id) {
     try {
-        const product = await getProduct({ _id: id });
+        const product = await getProduct({ _id: id })
+          .populate({
+            path:'comments',
+            populate: {
+              path: 'user'
+            }
+          })
+          .populate('reviews');
+        
         if (product === null)
             return { code: 404, err: 'Product not found' };
 
@@ -113,10 +138,8 @@ async function productUpdate(userid, id, updatedData) {
         const product = await getProduct({ _id: id });
         if (product === null)
             return { code: 404, err: 'Product not found' };
-        if (product.user !== userid)
-            return { code: 403, err: 'Product must belong to editing user' };
 
-        Object.keys(updateData).forEach(key => product[key] = updatedData[key]);
+        Object.keys(updatedData).forEach(key => product[key] = updatedData[key]);
         product.save();
 
         return { code: 200 };
@@ -170,6 +193,7 @@ async function productSearch(query) {
 
 module.exports = {
     productCreate,
+    myProducts,
     productFind,
     productFindMultiple,
     productAll,

@@ -5,6 +5,7 @@ const upload = multer();
 const productController = require('../controller/product.controller');
 
 app.post('/product-create', upload.any('images'), productController.productCreate);
+app.get('/myproducts', productController.myProducts)
 app.get('/product-read/:id', productController.productRead);
 app.get('/product-readAll', productController.productReadAll);
 app.put('/product-update/:id', upload.any('images'), productController.productUpdate);

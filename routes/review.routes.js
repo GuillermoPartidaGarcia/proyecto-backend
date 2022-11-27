@@ -3,6 +3,7 @@ const app = express();
 const reviewController = require('../controller/review.controller');
 
 app.post('/review-create', reviewController.reviewCreateOrUpdate);
+app.get('/myreview/:id', reviewController.myReview);
 app.get('/review-product/:id', reviewController.reviewFromProduct);
 app.delete('/review-delete/:id', reviewController.reviewDelete);
 

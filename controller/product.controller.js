@@ -38,6 +38,20 @@ async function productCreate(req, res) {
     return res.status(200).json(data);
 }
 
+async function myProducts(req, res){
+  const { user } = req;
+
+  if(!user) {
+    return res.status(401).send('Unathorized');
+  }
+
+  const { code, err, data } = await productService.myProducts(user._id);
+  if (err) 
+    return res.status(code).send(err);
+
+  return res.status(200).json(data);
+}
+
 function validateProductRead(id) {
     return !id ? 'Id mandatory, must not be empty' : null;
 }
@@ -94,7 +108,11 @@ function validateProductDelete(id) {
     return !id ? 'Id mandatory, must not be empty' : null;
 }
 async function productDelete(req, res) {
-    const { id } = req.params;
+    const { params: {id}, user } = req;
+    if (!user) {
+      return res.status(401).send('Unathorized');
+    }
+
     const userErr = validateProductDelete(id);
     if (userErr)
         return res.status(400).send(userErr);
@@ -118,6 +136,7 @@ async function productSearch(req, res) {
 
 module.exports = {
     productCreate,
+    myProducts,
     productRead,
     productReadAll,
     productUpdate,
