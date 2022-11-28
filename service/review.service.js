@@ -1,6 +1,6 @@
 const { getProduct, changeProduct } = require('../data/controller/product');
 const { getUser, changeUser } = require('../data/controller/user');
-const { createReview, getReviews, getReview } = require('../data/controller/review');
+const { createReview, getReviews, getReview, changeReview } = require('../data/controller/review');
 const Review = require('../data/model/review');
 
 async function reviewCreateOrUpdate(productId, userId, value) {
@@ -20,6 +20,7 @@ async function reviewCreateOrUpdate(productId, userId, value) {
         if(existing){
           existing.value = value;
           await existing.save();
+          await changeReview({_id: existing._id} , {$set: { value }});
           return { code: 200, data: existing };
         }
 
@@ -65,12 +66,12 @@ async function myReview(userId, productId) {
 
 function overallResponseString(score) {
     if (score >= 4)
-        return 'amazing!';
+        return 'fantastica!';
     else if (score >= 3)
-        return 'good';
+        return 'buena';
     else if (score >= 2)
-        return 'medium';
-    return 'poor';
+        return 'regular';
+    return 'mala';
 }
 async function reviewFromProduct(productId) {
     try {
@@ -85,10 +86,10 @@ async function reviewFromProduct(productId) {
 
         const [entry] = aggregateResult;
 
-        const data = {
-            ...entry,
-            overallResponse: overallResponseString(entry.score),
-        };
+        const data = 
+          entry ? 
+          { ...entry, overallResponse: overallResponseString(entry.score) } 
+          : {};
 
         return { code: 200, data };
     } catch (e) {
